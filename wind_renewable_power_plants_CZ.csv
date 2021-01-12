@@ -1,0 +1,123 @@
+electrical_capacity,energy_source_level_1,energy_source_level_2,energy_source_level_3,technology,data_source,nuts_1_region,nuts_2_region,nuts_3_region,lon,lat,municipality,postcode,region,locality,owner,site_name
+0.002,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.8,49.8333,Šumperk,789 01,Olomoucký,Drozdov,,VTE - Smékal Libor 2
+4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.3833,49.85,Svitavy,569 55,Pardubický,Janov,"ČEZ Obnovitelné zdroje, s.r.o.",Větrná elektrárna I a II Janov
+4.16,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,15.7667,49.4167,Havlíčkův Brod,582 52,Vysočina,Věžnice,"ČEZ Obnovitelné zdroje, s.r.o.",Větrná elektrárna Věžnice
+0.037,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ02,CZ020,14.7667,49.8667,Praha-východ,251 65,Středočeský,Zvánovice,,Větrná elektrárna Zvánovice
+0.225,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.15,50.3667,Jeseník,790 58,Olomoucký,Velká Kraš,Obec Velká Kraš,Větrná elektrárna
+1.5,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.4833,50.6,Most,435 45,Ústecký,Nová Ves v Horách,"Wind Tech, a.s.",Nová Ves v Horách
+0.007,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,18.1833,49.6833,Nový Jičín,742 58,Moravskoslezský,Příbor,,VĚTRNÁ ELEKTRÁRNA
+0.015,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,15.7333,49.8667,Chrudim,538 21,Pardubický,Mladoňovice,B V K v.o.s.,VĚTRNÁ ELEKTRÁRNA
+0.225,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ072,17.65,49.4,Kroměříž,768 61,Zlínský,Bystřice pod Hostýnem,Matice svatohostýnská,Matice svatohostýnská
+0.007,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ072,17.95,49.35,Vsetín,755 01,Zlínský,Vsetín,,Větrná elektrárna
+3,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.05,50.1833,Jeseník,788 25,Olomoucký,Ostružná,VE Ostružná s.r.o.,VE Ostružná s.r.o.
+1.2,Renewable energy,Wind,,Onshore,ERU,,,,,,Liberec,463 66,Liberecký,Jindřichovice pod Smrkem,Obec Jindřichovice pod Smrkem,VĚTRNÁ FARMA ENERCON E-40 (2 x 600 kWe)
+0.007,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,16.25,50.5667,Náchod,549 54,Královéhradecký,Police nad Metují,,VĚTRNÁ ELEKTRÁRNA
+0.02,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,15.5333,50.2,Hradec Králové,504 01,Královéhradecký,Zachrašťany,,PAVEL ŠMIDRKAL - VRŠE ZACHRAŠŤANY
+0.005,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,15.95,49.6167,Žďár nad Sázavou,591 02,Vysočina,Cikháj,,Malá větrná elektrárna
+1.8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.0778,50.4389,Chomutov,431 91,Ústecký,Loučná pod Klínovcem,"Green Lines, s.r.o.",Větrné elektrárny Loučná
+3.1,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,15.0333,50.95,Liberec,464 01,Liberecký,Heřmanice,"KONOTECH, s.r.o.",VE - Lysý Vrch
+0.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.5333,49.7333,Svitavy,568 02,Pardubický,Pohledy,S & M CZ s.r.o.,Pohledy
+0.6,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.7333,49.7,Svitavy,571 01,Pardubický,Moravská Třebová,S & M CZ s.r.o.,Žipotín
+0.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.6667,49.9667,Ústí nad Orlicí,563 01,Pardubický,Anenská Studánka,S & M CZ s.r.o.,Anenská Studánka
+3.75,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.6667,49.9667,Ústí nad Orlicí,563 01,Pardubický,Anenská Studánka,S & M CZ s.r.o.,D6 Anenská Studánka
+1.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.5333,49.7333,Svitavy,568 02,Pardubický,Karle,S & M CZ s.r.o.,D6 Ostrý Kámen
+0.01,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,15.9333,49.35,Žďár nad Sázavou,594 41,Vysočina,Uhřínov,,Větrná elektrárna Šeborov
+1.815,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.4333,50.2333,Cheb,351 34,Karlovarský,Nový Kostel,,VĚTRNÁ ELEKTRÁRNA VE-1
+1.5,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.4,50.25,Cheb,351 37,Karlovarský,Luby,,VĚTRNÁ ELEKTRÁRNA VE-2
+0.004,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ02,CZ020,14.2833,49.7667,Příbram,262 03,Středočeský,Malá Hraštice,,Dosoudil
+3,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.8333,49.5,Prostějov,798 48,Olomoucký,Protivanov,"Wind invest,s.r.o.",Větrná farma Protivanov
+0.85,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.5167,49.7167,Olomouc,783 06,Olomoucký,Hraničné Petrovice,APB - PLZEŇ a.s.,Hraničné Petrovice
+4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,15.6167,49.2167,Jihlava,588 33,Vysočina,Pavlov,APB - PLZEŇ a.s.,Pavlov
+8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.15,50.2833,Cheb,352 01,Karlovarský,Krásná,APB - PLZEŇ a.s.,Krásná - Mlýnský vrch 1
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.1833,50.2833,Cheb,351 24,Karlovarský,Hranice,APB - PLZEŇ a.s.,Hranice u Aše - VE 1
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.1833,50.2833,Cheb,351 24,Karlovarský,Hranice,APB - PLZEŇ a.s.,Hranice u Aše - VE 2
+10,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.15,50.2833,Cheb,352 01,Karlovarský,Aš,APB - PLZEŇ a.s.,5 VTE - Horní Paseky
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.15,50.2833,Cheb,352 01,Karlovarský,Krásná,APB - PLZEŇ a.s.,Krásná - Újezd - II. etapa
+0.85,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.5167,49.7167,Olomouc,783 06,Olomoucký,Hraničné Petrovice,"Haná Metal Wind, s.r.o.",Hraničné Petrovice
+4.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,16.2833,48.8833,Znojmo,671 65,Jihomoravský,Břežany,WEB Větrná energie s.r.o.,Větrný park Lopatov-Břežany
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,16.1833,48.9,Znojmo,671 61,Jihomoravský,Bantice,WEB Větrná energie s.r.o.,Bantice VE 03
+0.021,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,15.7833,50.0667,Pardubice,533 52,Pardubický,Srch,HASTEX & HASPR s.r.o.,Hastex &amp; Haspr s.r.o.
+0.01,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ03,CZ031,14.5333,49.3667,Tábor,391 75,Jihočeský,Malšice,,Malšice 28
+6,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.65,50.7167,Teplice,417 81,Ústecký,Moldava 11,WINDTEX s.r.o.,F a r m a v ě t r n ý c h e l e k t r á r e n U Tří pánů
+0.66,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.9083,50.3667,Karlovy Vary,362 51,Karlovarský,Jáchymov,"BENOCO, s.r.o.",VE Neklid
+1.165,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.1,50.0833,Šumperk,788 11,Olomoucký,Loučná nad Desnou,"BENOCO, s.r.o.",VE Mravenečník
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.9,49.45,Prostějov,798 61,Olomoucký,Drahany,VĚTRNÉ FARMY a.s.,Větrná elektrárna Drahany
+1.7,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,15.6167,49.2167,Jihlava,588 33,Vysočina,Pavlov,WIND POWER s.r.o.,2x VE 850 kW Pavlov
+4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,17.7833,49.6667,Nový Jičín,742 35,Moravskoslezský,Odry,WIND FINANCE a.s.,Větrné elektrárny Odry - Veselí
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,15.5167,49.7167,Havlíčkův Brod,582 42,Vysočina,Kámen,WIND FINANCE a.s.,Větrná elektrárna Kámen u Habrů
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.6167,49.6333,Přerov,753 62,Olomoucký,Potštát,WIND FINANCE a.s.,Větrná elektrárna Lipná
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.8,49.8333,Šumperk,789 01,Olomoucký,Maletín,WIND FINANCE a.s.,Větrná elektrárna Maletín
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.4667,49.7667,Olomouc,793 05,Olomoucký,Norberčany,NATUR ENERGO s.r.o.,Stará Libavá
+4.6,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.9,50.0833,Šumperk,788 33,Olomoucký,Kopřivná,NATUR ENERGO s.r.o.,Větrný park Kopřivná
+0.002,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ01,CZ010,14.3083,50.0333,,155 00,Hlavní město Praha,Praha,,VTE Na Hvížďalce
+7.5,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.0778,50.4389,Chomutov,431 91,Ústecký,Kryštofovy Hamry,"Green Lines Rusová, s.r.o.",Větrné elektrárny Rusová
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.4833,50.6,Most,435 45,Ústecký,Nová Ves v Horách,ALTENERG s.r.o.,Větrná elektrárna Nová Ves
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.5667,50.6167,Most,436 01,Ústecký,Klíny,ALTENERG s.r.o.,Větrná elektrárna Klíny - Sever
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.5667,50.6167,Most,436 01,Ústecký,Klíny,ALTENERG s.r.o.,Větrná elektrárna Klíny - Jih
+0.6,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.7333,49.7,Svitavy,571 01,Pardubický,Gruna,,VE Žipotín - Hikele
+42,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.0833,50.4,Chomutov,431 84,Ústecký,Měděnec,ecoenerg Windkraft GmbH & Co. KG,Farma větrných elektráren Kryštofovy Hamry
+2.7,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.1833,50.2833,Cheb,351 24,Karlovarský,Hranice,Farma Trojmezí a. s.,Větrný park Trojmezí
+6,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ02,CZ020,14.1167,50.2,Kladno,273 08,Středočeský,Pchery,"VTE Pchery, s.r.o.",VTE Pchery
+4.5,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.2667,50.5167,Chomutov,431 82,Ústecký,Hora Svatého Šebestiána,DROBIL-ENERGO s.r.o.,Park větrných elektráren
+8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.4833,50.6,Most,435 45,Ústecký,Nová Ves v Horách,"Větrné elektrárny Strážný Vrch, a.s.",Větrné elektrárny Strážný Vrch
+0.01,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ02,CZ020,14.15,50.25,Kladno,274 01,Středočeský,Knovíz,,Větrná elektrárna WT 10P
+4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.55,50.2,Sokolov,357 09,Karlovarský,Habartov,"PRE VTE Částkov, s.r.o.",Horní Částkov I
+18,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.3667,49.7667,Olomouc,783 05,Olomoucký,Horní Loděnice,Větrná energie HL s.r.o.,Větrný park Horní Loděnice - Lipina
+1.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.5333,49.7333,Svitavy,568 02,Pardubický,Karle,HIKELE stavební firma s.r.o.,VE HIKELE OSTRÝ KÁMEN
+1.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.5333,49.7333,Svitavy,568 02,Pardubický,Karle,Obec Karle,VE OBEC KARLE - OSTRÝ KÁMEN
+0.01,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,16.35,49.3833,Brno-venkov,594 55,Jihomoravský,Horní Loučky,,Větrná elektrárna
+0.001,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,15.9167,50.5167,Trutnov,541 01,Královéhradecký,Trutnov,,Babí 20
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,16.2,49.0333,Znojmo,671 73,Jihomoravský,Tulešice,"V - STAV INVEST, s.r.o.",Větrná elektrárna Tulešice
+0.15,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,17.4667,48.8667,Hodonín,696 73,Jihomoravský,Kuželov,,Elektrárna Kuželov
+0.8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.9083,50.3667,Karlovy Vary,362 51,Karlovarský,Jáchymov,BENOCO ENERGY s.r.o.,VE Neklid
+4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.55,50.2,Sokolov,357 09,Karlovarský,Habartov,"GREEN RECYCLING MACHINES, a.s.",Horní Částkov 2
+0.007,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ02,CZ020,15.3,50.1667,Nymburk,289 03,Středočeský,Městec Králové,ČSAP s.r.o.,VTE ČSAP - Městec Králové
+0.01,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ03,CZ031,13.75,49.15,Prachatice,384 73,Jihočeský,Stachy,,VTE Petr Roučka
+4.6,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,13.4667,50.0667,Karlovy Vary,364 53,Karlovarský,Vrbice,VTE Vrbice s.r.o.,VTE Vrbice
+9.2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.5333,50.3333,Sokolov,358 01,Karlovarský,Jindřichovice,VTE Stará s.r.o.,VTE Stará
+0.001,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ02,CZ020,13.7,50.1333,Rakovník,269 01,Středočeský,Rakovník,DŘEVODOMKY RAKOVNÍK s.r.o.,DŘEVODOMKY RAKOVNÍK s.r.o.
+1.2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.8333,49.55,Prostějov,798 46,Olomoucký,Brodek u Konice,,Brodek u Konice
+0.005,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,17.7597,49.7903,Opava,749 01,Moravskoslezský,Březová,,VTE Pliska
+1.8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.8333,49.4,Prostějov,798 62,Olomoucký,Rozstání,VĚTRNÝ PARK DRAHANY a.s.,Větrná elektrárna Rozstání
+1.8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,15.0333,50.95,Liberec,464 01,Liberecký,Horní Řasnice,Friendly Energy s.r.o.,VTE Horní Řasnice
+0.005,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,15.9,49.2,Třebíč,674 01,Vysočina,Střítež,,"VTE- 4,5kW STŘÍTEŽ"
+4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.8833,50.675,Teplice,417 42,Ústecký,Krupka,REN Power CZ a.s.,VTE Habartice
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.9833,50.7333,Ústí nad Labem,403 37,Ústecký,Petrovice,REN Power CZ a.s.,VTE Petrovice I.
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ042,13.9833,50.7333,Ústí nad Labem,403 37,Ústecký,Petrovice,REN Power CZ a.s.,VTE Petrovice II.
+13.8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,17.5667,49.8667,Bruntál,793 68,Moravskoslezský,Dvorce,REN Power CZ a.s.,Větrný park Červený kopec
+0.003,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,15.2167,50.7333,Jablonec nad Nisou,468 71,Liberecký,Lučany nad Nisou,,VTE Vavříček
+0.004,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,15.9167,50.5167,Trutnov,541 01,Královéhradecký,Trutnov,,Poříčská
+0.002,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,14.9556,50.7722,Liberec,460 14,Liberecký,Liberec,,VE Neumanová
+12.3,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,15.0333,50.95,Liberec,464 01,Liberecký,Višňová,VP Andělka s.r.o.,Farma větrných elektráren Andělka - 6 VTE
+2.05,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,15.0333,50.95,Liberec,464 01,Liberecký,Višňová,VP Andělka s.r.o.,Farma větrných elektráren Andělka - VTE č.7
+0.022,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,14.8333,50.8333,Liberec,463 34,Liberecký,Hrádek nad Nisou,,MVE BR1
+0.022,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,14.8333,50.8333,Liberec,463 34,Liberecký,Hrádek nad Nisou,,MVE BR2
+4.2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,18.25,49.95,Opava,747 16,Moravskoslezský,Hať,SWPOW s.r.o.,HAT
+0.003,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,16.525,49.2333,Brno-město,635 00,Jihomoravský,Brno,,"VTE Aleš Pekař, MBA"
+0.01,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ063,16.2417,49.1833,Třebíč,675 73,Vysočina,Rapotice,,VĚTRNÁ ELEKTRÁRNA
+0.6,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.6167,49.6333,Přerov,753 62,Olomoucký,Potštát,VAPOL VTE s.r.o.,VE Kyžlířov
+0.01,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,16.6222,49.1556,Brno-město,619 00,Jihomoravský,Brno,,Jaromír Hromek SBH20
+0.004,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,18.7167,49.5833,Frýdek-Místek,739 81,Moravskoslezský,Milíkov,,VTE CIESLAR
+0.8,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ03,CZ032,13.7,49.5333,Plzeň-jih,335 43,Plzeňský,Mladý Smolivec,V.E. Dožice s.r.o.,Větrná elektrárna E-48 Dožice
+1.5,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,15.0333,50.95,Liberec,464 01,Liberecký,Krásný Les,ECOENERGY - KRÁSNÝ LES s.r.o.,VTE KRÁSNÝ LES
+0.004,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.5,49.8333,Svitavy,569 12,Pardubický,Opatov,,VTE Opatov
+0.5,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.5333,49.7333,Svitavy,568 02,Pardubický,Svitavy,"E.J.R., s.r.o.",POHLEDY II - III
+4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.7333,49.7,Svitavy,571 01,Pardubický,Gruna,Supira Consulting a.s.,"Žipotín, obec Gruna, pozemkové parcely 392/2 a 394/5"
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,17.9667,49.9833,Opava,747 33,Moravskoslezský,Oldřišov,Větrná elektrárna Oldřišov s.r.o.,Větrná elektrárna Oldřišov
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,15.0333,50.95,Liberec,464 01,Liberecký,Dětřichov,ActiveEnergo s.r.o.,VTE Dětřichov
+3,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,15.7833,50.4833,Trutnov,544 62,Královéhradecký,Vítězná,OBČANSKÝ VĚTRNÝ PARK a.s.,Občanský větrný park - Vítězná
+2.2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,15.9167,50.5167,Trutnov,541 01,Královéhradecký,Zlatá Olešnice,FER s.r.o.,"VTE Zlatá Olešnice, 538/1"
+2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,15.9167,50.5167,Trutnov,541 01,Královéhradecký,Zlatá Olešnice,"FAN plus, s.r.o.",VE Zlatá Olešnice
+3,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ052,15.9167,50.5167,Trutnov,541 01,Královéhradecký,Zlatá Olešnice,PRO PLUS s.r.o.,Zlatá Olešnice
+0.005,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ03,CZ032,13.4833,49.75,Plzeň-sever,330 01,Plzeňský,Kyšice,,VTE Bartošová - výroba elektřiny
+1.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.6667,49.9667,Ústí nad Orlicí,563 01,Pardubický,Anenská Studánka,IVB wind s.r.o.,VTE D6 Anenská Studánka
+0.25,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ053,16.6667,49.9667,Ústí nad Orlicí,563 01,Pardubický,Anenská Studánka,"Plastobal, s.r.o.",Větrná elektrárna 1
+26.1,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ05,CZ051,14.8333,50.8333,Liberec,463 34,Liberecký,Hrádek nad Nisou,EEH s.r.o.,VTE Václavice
+0.007,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ06,CZ064,16.4167,49.2167,Brno-venkov,664 81,Jihomoravský,Ostrovačice,,VTE
+0.1,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,16.8333,49.5,Prostějov,798 48,Olomoucký,Protivanov,Ezektra DS s.r.o.,Větrná elektrárna
+4.4,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ08,CZ080,17.7667,49.8333,Opava,747 84,Moravskoslezský,Melč,SYNERGION ALFA CZ s.r.o.,VTE Melč
+15.82,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.5333,50.3333,Sokolov,358 01,Karlovarský,Jindřichovice,SYNERGION ALFA CZ s.r.o.,VTE Jindřichovice II
+2.2,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.1333,50.35,Jeseník,790 65,Olomoucký,Kobylá nad Vidnavkou,"VE Kobylá nad Vidnavkou, s.r.o.",VTE Kobylá
+0.5,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ07,CZ071,17.0333,49.95,Šumperk,788 03,Olomoucký,Nový Malín,,VE Mladoňov
+0.315,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ04,CZ041,12.85,50.4333,Karlovy Vary,363 01,Karlovarský,Jáchymov,SOLARHOME s.r.o.,VĚTRNÁ ELEKTRÁRNA EWT 315
+4.52,Renewable energy,Wind,,Onshore,ERU,CZ0,CZ03,CZ032,12.7667,49.9,Tachov,348 15,Plzeňský,Bor,Větrné elektrárny Bor s.r.o.,VTE Bor
