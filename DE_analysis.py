@@ -47,10 +47,7 @@ wind_data['average wind speed'] = output_list
 
 print(wind_data)
 
-
 #write
-writer = pd.ExcelWriter("output.xlsx", engine="xlsxwriter")
+writer = pd.ExcelWriter("DE_analysis_output.xlsx", engine="xlsxwriter")
 wind_data.to_excel(writer, sheet_name="AllData")
 writer.save()
-
-
