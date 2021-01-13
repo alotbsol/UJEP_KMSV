@@ -29,7 +29,7 @@ DE_wind_data.dropna(subset=['lat'], inplace=True)
 
 
 class Analysis:
-    def __init__(self, tif_file=CZ_tif, power_plant_file=CZ_wind_data):
+    def __init__(self, tif_file=DE_tif, power_plant_file=DE_wind_data):
 
         self.wind_data = power_plant_file
 
@@ -81,21 +81,20 @@ class Analysis:
         plt.savefig("map_w_farms")
         plt.show()
 
-    def heat_map_farms(self, resolution=100):
-        pass
-
+    def heat_map_farms(self):
         cols = self.dataset.RasterXSize
         rows = self.dataset.RasterYSize
+        heat_map = np.zeros((rows, cols))
 
-        heat_map = np.zeros((cols, rows))
+
         print(heat_map)
-        for i in range(0, resolution):
-            heat_map.append([])
+        for i in self.farms_pixel_coordinates:
+            heat_map[i[0]][i[1]] += 100
 
 
         print(self.farms_pixel_coordinates)
 
-        plt.imshow(self.farms_pixel_coordinates, cmap='hot', interpolation='nearest')
+        plt.imshow(heat_map, cmap='viridis', interpolation='nearest')
         plt.savefig("heat_map_farms")
         plt.show()
 
@@ -109,6 +108,6 @@ if __name__ == '__main__':
     Data = Analysis()
     # Data.map_w_farms()
     Data.heat_map_farms()
-
+    # Data.map_print()
 
 
