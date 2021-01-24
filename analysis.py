@@ -61,9 +61,6 @@ class Analysis:
             self.farms_pixel_coordinates.append((row, col))
             output_list.append(data[row][col])
 
-        print("farms_coordinates:", self.farms_pixel_coordinates)
-
-        print("output list:", output_list)
         self.wind_data['average wind speed'] = output_list
 
     def map_print(self):
@@ -84,15 +81,18 @@ class Analysis:
     def heat_map_farms(self):
         cols = self.dataset.RasterXSize
         rows = self.dataset.RasterYSize
-        heat_map = np.zeros((rows, cols))
+        heat_map = np.zeros((40, 30))
 
+        print("cols, rows", cols, rows, )
 
-        print(heat_map)
         for i in self.farms_pixel_coordinates:
-            heat_map[i[0]][i[1]] += 100
+            print(i)
+            x = round(40/cols * i[1]) - 1
+            y = round(30/rows * i[0]) - 1
+            print(x, y)
+            heat_map[x][y] += 1
 
-
-        print(self.farms_pixel_coordinates)
+        """print(self.farms_pixel_coordinates)"""
 
         plt.imshow(heat_map, cmap='viridis', interpolation='nearest')
         plt.savefig("heat_map_farms")
