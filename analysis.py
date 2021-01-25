@@ -2,6 +2,7 @@ from osgeo import gdal
 import os
 import pandas as pd
 import numpy as np
+import seaborn as sns
 import xlsxwriter
 
 import matplotlib.pyplot as plt
@@ -30,7 +31,6 @@ DE_wind_data.dropna(subset=['lat'], inplace=True)
 
 class Analysis:
     def __init__(self, tif_file=DE_tif, power_plant_file=DE_wind_data):
-
         self.wind_data = power_plant_file
 
         self.dataset = gdal.Open(tif_file)
@@ -53,6 +53,8 @@ class Analysis:
 
         output_list = []
         self.farms_pixel_coordinates = []
+        x_pixel = []
+        y_pixel = []
 
         for point in points_list:
             col = int((point[0] - xOrigin) / pixelWidth)
@@ -60,13 +62,68 @@ class Analysis:
 
             self.farms_pixel_coordinates.append((row, col))
             output_list.append(data[row][col])
+            x_pixel.append(col)
+            y_pixel.append(row)
 
         self.wind_data['average wind speed'] = output_list
+        self.wind_data['x_pixel'] = x_pixel
+        self.wind_data['y_pixel'] = y_pixel
 
     def map_print(self):
         tif_array = self.dataset.ReadAsArray()
-        img_plot = plt.imshow(tif_array, cmap="magma")
-        plt.show()
+        img_plot = plt.imshow(tif_array, cmap="viridis")
+        plt.savefig("Wind_speed_map_DE")
+        plt.clf()
+        plt.close()
+
+    def heat_map_farms(self, scale_down=100, name="heatmap", lowest_value=10):
+        cols = self.dataset.RasterXSize
+        rows = self.dataset.RasterYSize
+        heat_map_x_length = round(cols/scale_down)
+        heat_map_y_length = round(rows/scale_down)
+
+        heat_map = np.zeros((heat_map_x_length, heat_map_y_length))
+
+
+
+        for i in self.wind_data.index:
+            x = round(heat_map_x_length/cols * self.wind_data.loc[i, 'x_pixel']) - 1
+            y = round(heat_map_y_length/rows * self.wind_data.loc[i, 'y_pixel']) - 1
+
+            # add capacity
+            heat_map[x][y] += self.wind_data.loc[i, 'electrical_capacity']
+
+        sns.heatmap(heat_map, cmap='viridis', mask=(heat_map < lowest_value), square=True,
+                    xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
+
+        plt.savefig(name + "year_")
+        plt.clf()
+        plt.close()
+
+        for ii in [1980, 1990, 2000, 2010]:
+            heat_map = np.zeros((heat_map_x_length, heat_map_y_length))
+
+            yearly_df = self.wind_data.loc[(self.wind_data.year > ii) & (self.wind_data.year < ii+10)]
+            print(yearly_df)
+
+            for i in yearly_df.index:
+                x = round(heat_map_x_length/cols * yearly_df.loc[i, 'x_pixel']) - 1
+                y = round(heat_map_y_length/rows * yearly_df.loc[i, 'y_pixel']) - 1
+
+                # add capacity
+                heat_map[x][y] += yearly_df.loc[i, 'electrical_capacity']
+
+            sns.heatmap(heat_map, cmap='viridis', mask=(heat_map < lowest_value), square=True,
+                        xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
+
+            plt.savefig(name + "year_" + str(ii))
+            plt.clf()
+            plt.close()
+
+    def save(self):
+        writer = pd.ExcelWriter("CZ_analysis_output.xlsx", engine="xlsxwriter")
+        self.wind_data.to_excel(writer, sheet_name="AllData")
+        writer.save()
 
     def map_w_farms(self):
         tif_array = self.dataset.ReadAsArray()
@@ -78,36 +135,13 @@ class Analysis:
         plt.savefig("map_w_farms")
         plt.show()
 
-    def heat_map_farms(self):
-        cols = self.dataset.RasterXSize
-        rows = self.dataset.RasterYSize
-        heat_map = np.zeros((40, 30))
-
-        print("cols, rows", cols, rows, )
-
-        for i in self.farms_pixel_coordinates:
-            print(i)
-            x = round(40/cols * i[1]) - 1
-            y = round(30/rows * i[0]) - 1
-            print(x, y)
-            heat_map[x][y] += 1
-
-        """print(self.farms_pixel_coordinates)"""
-
-        plt.imshow(heat_map, cmap='viridis', interpolation='nearest')
-        plt.savefig("heat_map_farms")
-        plt.show()
-
-    def save(self):
-        writer = pd.ExcelWriter("CZ_analysis_output.xlsx", engine="xlsxwriter")
-        self.wind_data.to_excel(writer, sheet_name="AllData")
-        writer.save()
-
 
 if __name__ == '__main__':
     Data = Analysis()
-    # Data.map_w_farms()
-    Data.heat_map_farms()
-    # Data.map_print()
+    Data.map_print()
+    for i in [1]:
+        Data.heat_map_farms(name="heatmap_{0}".format(i), lowest_value=i)
+
+
 
 
