@@ -155,26 +155,21 @@ class Analysis:
 
     def create_histogram_yearly_add(self, name="hist_yearly_add"):
         colours_list = cm.get_cmap("viridis")
-
-        year_sums = {}
+        years = []
+        sums = []
 
         for i in range(1980, 2019):
+            years.append(i)
             new_df = (self.wind_data.loc[self.wind_data.year == i])
-            year_sums[str(i)] = new_df["electrical_capacity"].sum()
+            sums.append(new_df["electrical_capacity"].sum())
 
-        print(year_sums)
-        new_df = pd.DataFrame(data=year_sums)
-        print(new_df)
-
-
-        sns.histplot(data=self.wind_data, x="year", bins=self.wind_data["year"].max()-self.wind_data["year"].min()+1,
-                     weights="electrical_capacity", stat="count", color=colours_list(0))
+        df = pd.DataFrame(list(zip(sums, years)), columns=["Sums", "Years"])
+        sns.barplot(x="Years", y="Sums", data=df, palette="viridis")
+        plt.xticks(rotation='vertical')
 
         plt.savefig(name)
         plt.clf()
         plt.close()
-
-
 
     def save(self):
         writer = pd.ExcelWriter("Analysis_output.xls", engine="xlsxwriter")
@@ -199,10 +194,8 @@ class Analysis:
 if __name__ == '__main__':
     Data = Analysis()
 
-    """
-    Data.save()
+    # Data.save()
 
-    
     Data.map_print()
 
     for i in [1]:
@@ -213,8 +206,7 @@ if __name__ == '__main__':
     Data.create_histogram()
     Data.create_histogram_hue()
     Data.create_histogram_decade()
-    
-    """
+
     Data.create_histogram_yearly_add()
 
 
