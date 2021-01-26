@@ -205,7 +205,18 @@ class Analysis:
         df = pd.DataFrame(list(zip(years, years_sq, year_count, year_count_sq, ref_yield, average_speed)),
                           columns=["years", "years_sq", "year_count", "year_count_sq", "ref_yield", "average_speed"])
 
-        multi_lin_reg(input_df=df, independent_vars=['year_count', 'ref_yield'], dependent_var=['average_speed'])
+        the_model = multi_lin_reg(input_df=df, independent_vars=["year_count", 'ref_yield'], dependent_var=['average_speed'])
+
+        predictions = []
+        for i in year_count:
+            predictions.append(float(the_model.predict_it(independent_vars=[i, 1])))
+
+        print(predictions)
+        print(average_speed)
+
+        for i in [predictions, average_speed]:
+            plt.plot(years, i)
+        plt.show()
 
 
         # average wind speed per country, average per region
