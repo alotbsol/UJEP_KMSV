@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import xlsxwriter
+from matplotlib.pyplot import cm
 
 import matplotlib.pyplot as plt
 
@@ -68,6 +69,7 @@ class Analysis:
         self.wind_data['average wind speed'] = output_list
         self.wind_data['x_pixel'] = x_pixel
         self.wind_data['y_pixel'] = y_pixel
+        self.wind_data['decade'] = np.floor(self.wind_data['year']/10)*10
 
     def map_print(self):
         tif_array = self.dataset.ReadAsArray()
@@ -84,8 +86,6 @@ class Analysis:
 
         heat_map = np.zeros((heat_map_x_length, heat_map_y_length))
 
-
-
         for i in self.wind_data.index:
             x = round(heat_map_x_length/cols * self.wind_data.loc[i, 'x_pixel']) - 1
             y = round(heat_map_y_length/rows * self.wind_data.loc[i, 'y_pixel']) - 1
@@ -100,11 +100,15 @@ class Analysis:
         plt.clf()
         plt.close()
 
-        for ii in [1980, 1990, 2000, 2010]:
-            heat_map = np.zeros((heat_map_x_length, heat_map_y_length))
+    def heat_map_farms_yearly(self, scale_down=100, name="heatmap", lowest_value=10, years=[1990, 2000, 2010]):
+        cols = self.dataset.RasterXSize
+        rows = self.dataset.RasterYSize
+        heat_map_x_length = round(cols/scale_down)
+        heat_map_y_length = round(rows/scale_down)
 
+        for ii in years:
+            heat_map = np.zeros((heat_map_x_length, heat_map_y_length))
             yearly_df = self.wind_data.loc[(self.wind_data.year > ii) & (self.wind_data.year < ii+10)]
-            print(yearly_df)
 
             for i in yearly_df.index:
                 x = round(heat_map_x_length/cols * yearly_df.loc[i, 'x_pixel']) - 1
@@ -120,10 +124,66 @@ class Analysis:
             plt.clf()
             plt.close()
 
+    def create_histogram(self, name="hist"):
+        colours_list = cm.get_cmap("viridis")
+
+        sns.histplot(data=self.wind_data, x="average wind speed", bins=20, kde=True,
+                     weights="electrical_capacity", stat="probability", color=colours_list(0))
+
+        plt.savefig(name)
+        plt.clf()
+        plt.close()
+
+    def create_histogram_decade(self, years=[1980, 1990, 2000, 2010], name="hist"):
+        for i in years:
+            colours_list = cm.get_cmap("viridis")
+
+            sns.histplot(data=self.wind_data.loc[self.wind_data.decade == i], x="average wind speed", bins=20, kde=True,
+                         weights="electrical_capacity", stat="probability", color=colours_list((i-min(years))/(max(years)-min(years))))
+
+            plt.savefig(name + "years" + str(i))
+            plt.clf()
+            plt.close()
+
+    def create_histogram_hue(self):
+        sns.histplot(data=self.wind_data, x="average wind speed", bins=20, kde=True, weights="electrical_capacity",
+                     stat="probability", hue="decade", palette="viridis", common_norm=False, multiple="dodge")
+
+        plt.savefig("hist_hue_decade")
+        plt.clf()
+        plt.close()
+
+    def create_histogram_yearly_add(self, name="hist_yearly_add"):
+        colours_list = cm.get_cmap("viridis")
+
+        year_sums = {}
+
+        for i in range(1980, 2019):
+            new_df = (self.wind_data.loc[self.wind_data.year == i])
+            year_sums[str(i)] = new_df["electrical_capacity"].sum()
+
+        print(year_sums)
+        new_df = pd.DataFrame(data=year_sums)
+        print(new_df)
+
+
+        sns.histplot(data=self.wind_data, x="year", bins=self.wind_data["year"].max()-self.wind_data["year"].min()+1,
+                     weights="electrical_capacity", stat="count", color=colours_list(0))
+
+        plt.savefig(name)
+        plt.clf()
+        plt.close()
+
+
+
     def save(self):
-        writer = pd.ExcelWriter("CZ_analysis_output.xlsx", engine="xlsxwriter")
+        writer = pd.ExcelWriter("Analysis_output.xls", engine="xlsxwriter")
         self.wind_data.to_excel(writer, sheet_name="AllData")
         writer.save()
+
+
+
+
 
     def map_w_farms(self):
         tif_array = self.dataset.ReadAsArray()
@@ -138,9 +198,27 @@ class Analysis:
 
 if __name__ == '__main__':
     Data = Analysis()
+
+    """
+    Data.save()
+
+    
     Data.map_print()
+
     for i in [1]:
         Data.heat_map_farms(name="heatmap_{0}".format(i), lowest_value=i)
+
+        Data.heat_map_farms_yearly(name="heatmap_{0}".format(i), lowest_value=i)
+
+    Data.create_histogram()
+    Data.create_histogram_hue()
+    Data.create_histogram_decade()
+    
+    """
+    Data.create_histogram_yearly_add()
+
+
+
 
 
 
