@@ -14,10 +14,12 @@ def multi_lin_reg(input_df, independent_vars, dependent_var):
     print('Intercept: \n', regr.intercept_)
     print('Coefficients: \n', regr.coef_)
 
+    """
     # prediction with sklearn
     New_Interest_Rate = 2.75
     New_Unemployment_Rate = 5.3
     print('Predicted Stock Index Price: \n', regr.predict([[New_Interest_Rate, New_Unemployment_Rate]]))
+    """
 
     # with statsmodels
     x = sm.add_constant(x)  # adding a constant
@@ -27,6 +29,7 @@ def multi_lin_reg(input_df, independent_vars, dependent_var):
 
     print_model = model.summary()
     print(print_model)
+
 
 
 Stock_Market = {
@@ -43,7 +46,7 @@ Stock_Market = {
 
 df = pd.DataFrame(Stock_Market, columns=['Year', 'Month', 'Interest_Rate', 'Unemployment_Rate', 'Stock_Index_Price'])
 
-multi_lin_reg(input_df=df, independent_vars=['Interest_Rate', 'Unemployment_Rate'], dependent_var=['Stock_Index_Price'])
+# multi_lin_reg(input_df=df, independent_vars=['Interest_Rate', 'Unemployment_Rate'], dependent_var=['Stock_Index_Price'])
 
 """
 X = df[['Interest_Rate',

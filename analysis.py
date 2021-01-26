@@ -5,8 +5,9 @@ import numpy as np
 import seaborn as sns
 import xlsxwriter
 from matplotlib.pyplot import cm
-
 import matplotlib.pyplot as plt
+
+from reg import multi_lin_reg
 
 os.environ['PROJ_LIB'] = 'C:\\Users\\proko\\miniconda3\\pkgs\\proj-6.2.1-h9f7ef89_0\\Library\\share\\proj'
 os.environ['GDAL_DATA'] = 'C:\\Users\\proko\\miniconda3\\pkgs\\proj-6.2.1-h9f7ef89_0\\Library\\share'
@@ -176,24 +177,47 @@ class Analysis:
         self.wind_data.to_excel(writer, sheet_name="AllData")
         writer.save()
 
+    def do_simple_reg(self):
+        years = self.wind_data["year"].unique()
+        years_sq = years ** 2
+
+        year_count = []
+        for i in range(1, len(years) +1):
+            year_count.append(i)
+
+        print(year_count)
+        year_count_sq = [x**2 for x in year_count]
+        print(year_count_sq)
+
+        ref_yield = []
+        for i in years:
+            if i > 2012:
+                ref_yield.append(0)
+            else:
+                ref_yield.append(1)
+
+        average_speed = []
+        for i in years:
+            x = self.wind_data.loc[self.wind_data.year == i]
+            x = x["average wind speed"].mean(axis=0)
+            average_speed.append(x)
+
+        df = pd.DataFrame(list(zip(years, years_sq, year_count, year_count_sq, ref_yield, average_speed)),
+                          columns=["years", "years_sq", "year_count", "year_count_sq", "ref_yield", "average_speed"])
+
+        multi_lin_reg(input_df=df, independent_vars=['year_count', 'ref_yield'], dependent_var=['average_speed'])
 
 
+        # average wind speed per country, average per region
+        # year, year2, referenceyield = TF, auctions = TF, FeedIn = TF
 
 
-    def map_w_farms(self):
-        tif_array = self.dataset.ReadAsArray()
-        img_plot = plt.imshow(tif_array, cmap="magma")
-
-        for i in self.farms_pixel_coordinates:
-            plt.scatter(i[1], i[0], c="black", s=10, marker="o", alpha=1, zorder=3)
-
-        plt.savefig("map_w_farms")
-        plt.show()
-
+        # multi_lin_reg(input_df=df, independent_vars=['Interest_Rate', 'Unemployment_Rate'], dependent_var=['Stock_Index_Price'])
 
 if __name__ == '__main__':
     Data = Analysis()
 
+    """
     # Data.save()
 
     Data.map_print()
@@ -208,6 +232,10 @@ if __name__ == '__main__':
     Data.create_histogram_decade()
 
     Data.create_histogram_yearly_add()
+    
+    """
+
+    Data.do_simple_reg()
 
 
 
