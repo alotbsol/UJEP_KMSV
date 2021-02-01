@@ -178,6 +178,9 @@ class Analysis:
         writer.save()
 
     def do_simple_reg(self):
+        states = self.wind_data["federal_state"].unique()
+        print(states)
+
         years = self.wind_data["year"].unique()
         years_sq = years ** 2
 
@@ -207,6 +210,7 @@ class Analysis:
 
         the_model = multi_lin_reg(input_df=df, independent_vars=["year_count", 'ref_yield'], dependent_var=['average_speed'])
 
+        """ is it working??? """
         predictions = []
         for i in year_count:
             predictions.append(float(the_model.predict_it(independent_vars=[i, 1])))
@@ -215,7 +219,8 @@ class Analysis:
         print(average_speed)
 
         for i in [predictions, average_speed]:
-            plt.plot(years, i)
+            plt.plot(years, i, label=["predictions", "average speed"])
+
         plt.show()
 
 
@@ -224,6 +229,52 @@ class Analysis:
 
 
         # multi_lin_reg(input_df=df, independent_vars=['Interest_Rate', 'Unemployment_Rate'], dependent_var=['Stock_Index_Price'])
+
+    def simple_graphs(self):
+        y = 0
+        years = self.wind_data["year"].unique()
+        states = self.wind_data["federal_state"].unique()
+
+        df_pivot = pd.pivot_table(self.wind_data, values="average wind speed", index="federal_state", columns=["year"],
+                                      aggfunc=np.mean)
+
+        df_average = pd.pivot_table(self.wind_data, values="average wind speed", columns=["year"],
+                                      aggfunc=np.mean)
+
+        """
+        average_speed = []
+        for i in years:
+            x = self.wind_data.loc[self.wind_data.year == i]
+            x = x["average wind speed"].mean(axis=0)
+            average_speed.append(x)
+        """
+
+
+        # THIS WORKS
+        """
+        plt.plot(df_pivot.transpose(), color="viridis", marker='o', markersize=2)
+        plt.plot(df_average.transpose(), color='black', linewidth=4, linestyle='dashed')
+
+        plt.legend(states)
+        """
+        fig, ax = plt.subplots(figsize=(18, 9))
+
+
+        sns.lineplot(x="year", y="average wind speed", hue="federal_state",
+                     data=self.wind_data, ci=None, marker='o', markersize=2)
+        sns.lineplot(x="year", y="average wind speed", data=self.wind_data, color="black", linewidth=4)
+
+
+
+        plt.show()
+
+        # plt.savefig("graphs/simple{0}.png".format(str(y)))
+        # plt.clf()
+        # plt.close()
+
+        y += 1
+
+
 
 if __name__ == '__main__':
     Data = Analysis()
@@ -246,7 +297,8 @@ if __name__ == '__main__':
     
     """
 
-    Data.do_simple_reg()
+    # Data.do_simple_reg()
+    Data.simple_graphs()
 
 
 
