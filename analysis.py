@@ -177,58 +177,100 @@ class Analysis:
         self.wind_data.to_excel(writer, sheet_name="AllData")
         writer.save()
 
-    def do_simple_reg(self):
-        states = self.wind_data["federal_state"].unique()
-        print(states)
-
-        years = self.wind_data["year"].unique()
-        years_sq = years ** 2
+    def do_simple_reg(self, base_year=1980):
+        year = self.wind_data["year"].unique()
+        year_sq = year ** 2
 
         year_count = []
-        for i in range(1, len(years) +1):
+        for i in range(1, len(year) +1):
             year_count.append(i)
 
-        print(year_count)
         year_count_sq = [x**2 for x in year_count]
-        print(year_count_sq)
 
         ref_yield = []
-        for i in years:
+        for i in year:
             if i > 2012:
-                ref_yield.append(0)
-            else:
                 ref_yield.append(1)
+            else:
+                ref_yield.append(0)
 
         average_speed = []
-        for i in years:
+        for i in year:
             x = self.wind_data.loc[self.wind_data.year == i]
             x = x["average wind speed"].mean(axis=0)
             average_speed.append(x)
 
-        df = pd.DataFrame(list(zip(years, years_sq, year_count, year_count_sq, ref_yield, average_speed)),
-                          columns=["years", "years_sq", "year_count", "year_count_sq", "ref_yield", "average_speed"])
+        df = pd.DataFrame(list(zip(year, year_sq, year_count, year_count_sq, ref_yield, average_speed)),
+                          columns=["year", "year_sq", "year_count", "year_count_sq", "ref_yield", "average_speed"])
+
+
+        """adjusted base year"""
+        df = df.loc[df.year > base_year]
 
         the_model = multi_lin_reg(input_df=df, independent_vars=["year_count", 'ref_yield'], dependent_var=['average_speed'])
 
-        """ is it working??? """
         predictions = []
-        for i in year_count:
-            predictions.append(float(the_model.predict_it(independent_vars=[i, 1])))
+        predictions_t = []
+        predictions_f = []
 
-        print(predictions)
-        print(average_speed)
+        for i in df["year_count"]:
+            predictions_t.append(float(the_model.predict_it(independent_vars=[i, 1])))
+            predictions_f.append(float(the_model.predict_it(independent_vars=[i, 0])))
+            predictions.append(float(the_model.predict_it(independent_vars=[i,
+                                                        df.loc[df["year_count"] == i, "ref_yield"].iloc[0]])))
 
-        for i in [predictions, average_speed]:
-            plt.plot(years, i, label=["predictions", "average speed"])
+        for i in [predictions, predictions_t, predictions_f, df["average_speed"]]:
+            plt.plot(df["year"].unique(), i, label=["predictions","predictions","predictions", "average speed"])
 
         plt.show()
-
 
         # average wind speed per country, average per region
         # year, year2, referenceyield = TF, auctions = TF, FeedIn = TF
 
+    def reg_by_state(self, base_year=1980):
+        # df_grouped_by = self.wind_data[["average wind speed", "year", "federal_state"]]
+        # df_grouped_by = df_grouped_by.groupby(["federal_state", "year"]).mean().reset_index()
 
-        # multi_lin_reg(input_df=df, independent_vars=['Interest_Rate', 'Unemployment_Rate'], dependent_var=['Stock_Index_Price'])
+        df = self.wind_data[["average wind speed", "year", "federal_state"]].copy()
+        first_year = df["year"].min() - 1
+        df["year_count"] = df["year"] - first_year
+
+        ref_yield = []
+        for i in df["year"]:
+            if i > 2013:
+                ref_yield.append(1)
+            else:
+                ref_yield.append(0)
+
+        df["ref_yield"] = ref_yield
+        df = df.loc[df.year > base_year]
+
+        for i in ["Niedersachsen"]:
+            df_adjusted = df.loc[df.federal_state == i].copy()
+
+            first_year = df_adjusted["year"].min()
+
+            df_adjusted["year_count"] = df_adjusted["year"] - first_year
+
+            df_adjusted = df_adjusted.groupby(["year", ]).mean().reset_index()
+
+            the_model = multi_lin_reg(input_df=df_adjusted, independent_vars=['year_count', "ref_yield"],
+                                      dependent_var=['average wind speed'])
+
+            predictions = []
+            predictions_t = []
+            predictions_f = []
+            for ii in df_adjusted["year_count"]:
+                predictions_t.append(float(the_model.predict_it(independent_vars=[ii, 1])))
+                predictions_f.append(float(the_model.predict_it(independent_vars=[ii, 0])))
+                predictions.append(float(the_model.predict_it(independent_vars=[ii,
+                                            df_adjusted.loc[df_adjusted["year_count"] == ii, "ref_yield"].iloc[0]])))
+
+            for ii in (predictions, predictions_t, predictions_f, df_adjusted["average wind speed"]):
+                plt.plot(df_adjusted["year"], ii, label=["predictions", "predictions TRUE", "predictions False" "average speed"])
+
+
+            plt.show()
 
     def simple_graphs(self):
         y = 0
@@ -297,8 +339,10 @@ if __name__ == '__main__':
     
     """
 
-    # Data.do_simple_reg()
-    Data.simple_graphs()
+    Data.do_simple_reg()
+    # Data.simple_graphs()
+
+    # Data.reg_by_state()
 
 
 

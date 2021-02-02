@@ -12,8 +12,8 @@ class multi_lin_reg:
         self.regr = linear_model.LinearRegression()
         self.regr.fit(x, y)
 
-        print('Intercept: \n', self.regr.intercept_)
-        print('Coefficients: \n', self.regr.coef_)
+        # print('Intercept: \n', self.regr.intercept_)
+        # print('Coefficients: \n', self.regr.coef_)
 
         # with statsmodels
         x = sm.add_constant(x)  # adding a constant
@@ -26,7 +26,7 @@ class multi_lin_reg:
 
     def predict_it(self, independent_vars):
         # prediction with sklearn
-        print('Predicted value: \n', self.regr.predict([independent_vars]))
+        # print('Predicted value: \n', self.regr.predict([independent_vars]))
         return self.regr.predict([independent_vars])
 
 
