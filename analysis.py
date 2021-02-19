@@ -72,6 +72,9 @@ class Analysis:
         self.wind_data['y_pixel'] = y_pixel
         self.wind_data['decade'] = np.floor(self.wind_data['year']/10)*10
 
+        self.regulatory_phases = {"Phase1": [1979, 1990], "Phase2": [1990, 2000],
+                                  "Phase3": [2000, 2017], "Phase4": [2017, 2020]}
+
     def map_print(self):
         tif_array = self.dataset.ReadAsArray()
         img_plot = plt.imshow(tif_array, cmap="viridis")
@@ -94,14 +97,20 @@ class Analysis:
             # add capacity
             heat_map[x][y] += self.wind_data.loc[i, 'electrical_capacity']
 
-        sns.heatmap(heat_map, cmap='viridis', mask=(heat_map < lowest_value), square=True,
+        ax = plt.axes()
+        sns.heatmap(heat_map, ax=ax, cmap='viridis', mask=(heat_map < lowest_value), square=True,
                     xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
+
+        ax.set_title(str(self.wind_data['year'].min()) + " - " + str(self.wind_data['year'].max()))
 
         plt.savefig(name + "year_")
         plt.clf()
         plt.close()
 
-    def heat_map_farms_yearly(self, scale_down=100, name="heatmap", lowest_value=10, years=[1990, 2000, 2010]):
+    def heat_map_farms_yearly(self, scale_down=100, name="heatmap", lowest_value=10,
+                              years={"Phase1": [1979, 1990], "Phase2": [1990, 2000],
+                                  "Phase3": [2000, 2017], "Phase4": [2017, 2020]}):
+
         cols = self.dataset.RasterXSize
         rows = self.dataset.RasterYSize
         heat_map_x_length = round(cols/scale_down)
@@ -109,17 +118,29 @@ class Analysis:
 
         for ii in years:
             heat_map = np.zeros((heat_map_x_length, heat_map_y_length))
-            yearly_df = self.wind_data.loc[(self.wind_data.year > ii) & (self.wind_data.year < ii+10)]
+            yearly_df = self.wind_data.loc[(self.wind_data.year >= years[ii][0]) & (self.wind_data.year < years[ii][1])]
 
-            for i in yearly_df.index:
-                x = round(heat_map_x_length/cols * yearly_df.loc[i, 'x_pixel']) - 1
-                y = round(heat_map_y_length/rows * yearly_df.loc[i, 'y_pixel']) - 1
+            for iii in yearly_df.index:
+                x = round(heat_map_x_length/cols * yearly_df.loc[iii, 'x_pixel']) - 1
+                y = round(heat_map_y_length/rows * yearly_df.loc[iii, 'y_pixel']) - 1
 
                 # add capacity
-                heat_map[x][y] += yearly_df.loc[i, 'electrical_capacity']
+                heat_map[x][y] += yearly_df.loc[iii, 'electrical_capacity']
 
-            sns.heatmap(heat_map, cmap='viridis', mask=(heat_map < lowest_value), square=True,
+            ax = plt.axes()
+            sns.heatmap(heat_map, ax=ax, cmap='viridis', mask=(heat_map < lowest_value), square=True,
                         xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
+
+            ax.set_title(str(ii) + ": " + str(years[ii][0]) + " - " + str(years[ii][1]))
+
+            """
+            fig.text(0.02 + shift_value, 0.215,
+                     "Utility Index %: " + str(round((avg - avg_min) / (avg_max - avg_min) * 100)) + "\n"
+                                                                                                     "Average Value: " + str(
+                         round(avg, 2)) + "\n"
+                                          "Median value: " + str(round(med, 2)),
+                     fontsize=10, verticalalignment='top', bbox=text_props)
+            """
 
             plt.savefig(name + "year_" + str(ii))
             plt.clf()
@@ -187,12 +208,22 @@ class Analysis:
 
         year_count_sq = [x**2 for x in year_count]
 
+        phases = {}
+        for i in self.regulatory_phases:
+            phases[i] = []
+            for ii in year:
+                if ii >= self.regulatory_phases[i][0] and ii < self.regulatory_phases[i][1]:
+                    phases[i].append(1)
+                else:
+                    phases[i].append(0)
+
         ref_yield = []
         for i in year:
-            if i > 2012:
+            if i > 2000:
                 ref_yield.append(1)
             else:
                 ref_yield.append(0)
+
 
         average_speed = []
         for i in year:
@@ -203,24 +234,31 @@ class Analysis:
         df = pd.DataFrame(list(zip(year, year_sq, year_count, year_count_sq, ref_yield, average_speed)),
                           columns=["year", "year_sq", "year_count", "year_count_sq", "ref_yield", "average_speed"])
 
+        for i in phases:
+            df[i] = phases[i]
+
+        print(df)
 
         """adjusted base year"""
         df = df.loc[df.year > base_year]
 
-        the_model = multi_lin_reg(input_df=df, independent_vars=["year_count", 'ref_yield'], dependent_var=['average_speed'])
+        the_model = multi_lin_reg(input_df=df,
+                                  independent_vars=["year_count", "year_count_sq", "ref_yield",
+                                                    ],
+                                  dependent_var=['average_speed'])
 
         predictions = []
         predictions_t = []
         predictions_f = []
 
         for i in df["year_count"]:
-            predictions_t.append(float(the_model.predict_it(independent_vars=[i, 1])))
-            predictions_f.append(float(the_model.predict_it(independent_vars=[i, 0])))
-            predictions.append(float(the_model.predict_it(independent_vars=[i,
+            predictions_t.append(float(the_model.predict_it(independent_vars=[i, i**2, 1])))
+            predictions_f.append(float(the_model.predict_it(independent_vars=[i, i**2, 0])))
+            predictions.append(float(the_model.predict_it(independent_vars=[i, i**2,
                                                         df.loc[df["year_count"] == i, "ref_yield"].iloc[0]])))
 
         for i in [predictions, predictions_t, predictions_f, df["average_speed"]]:
-            plt.plot(df["year"].unique(), i, label=["predictions","predictions","predictions", "average speed"])
+            plt.plot(df["year"].unique(), i, label=["predictions", "predictions", "predictions", "average speed"])
 
         plt.show()
 
@@ -321,25 +359,31 @@ class Analysis:
 if __name__ == '__main__':
     Data = Analysis()
 
-    """
+
     # Data.save()
 
+    """
     Data.map_print()
+    """
+
+
 
     for i in [1]:
         Data.heat_map_farms(name="heatmap_{0}".format(i), lowest_value=i)
 
         Data.heat_map_farms_yearly(name="heatmap_{0}".format(i), lowest_value=i)
 
+    """
     Data.create_histogram()
     Data.create_histogram_hue()
     Data.create_histogram_decade()
 
     Data.create_histogram_yearly_add()
     
-    """
+   
 
     Data.do_simple_reg()
+     """
     # Data.simple_graphs()
 
     # Data.reg_by_state()
