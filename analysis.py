@@ -72,8 +72,15 @@ class Analysis:
         self.wind_data['y_pixel'] = y_pixel
         self.wind_data['decade'] = np.floor(self.wind_data['year']/10)*10
 
+        self.regulatory_phases = {"Period1": [1979, 1990],
+                                  "Period3": [1990, 1995], "Period4": [1995, 2000],
+                                  "Period5": [2000, 2005], "Period6": [2005, 2010],
+                                  "Period7": [2010, 2015], "Period8": [2015, 2019]}
+
+        """
         self.regulatory_phases = {"Phase1": [1979, 1990], "Phase2": [1990, 2000],
                                   "Phase3": [2000, 2017], "Phase4": [2017, 2019]}
+                                  """
 
     def map_print(self):
         tif_array = self.dataset.ReadAsArray()
@@ -99,7 +106,8 @@ class Analysis:
 
         ax = plt.axes()
         sns.heatmap(heat_map, ax=ax, cmap='viridis', mask=(heat_map < lowest_value), square=True,
-                    xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
+                    xticklabels=False, yticklabels=False, linewidths=0.5, robust=True,
+                    cbar_kws={'label': 'MW'})
 
         text_props = dict(boxstyle='square', facecolor='white', edgecolor="none", alpha=0.9, pad=0.5)
 
@@ -138,7 +146,8 @@ class Analysis:
 
             ax = plt.axes()
             sns.heatmap(heat_map, ax=ax, cmap='viridis', mask=(heat_map < lowest_value), square=True,
-                        xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
+                        xticklabels=False, yticklabels=False, linewidths=0.5, robust=True,
+                        cbar_kws={'label': 'MW'})
 
             ax.set_title(str(ii) + ": " + str(self.regulatory_phases[ii][0]) + " - "
                          + str(self.regulatory_phases[ii][1]-1))
