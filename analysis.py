@@ -152,6 +152,7 @@ class Analysis:
                      "Total added capacity: " + str(total_added_capacity) + " MW"
                      + "\n"
                      "Added capacity per year: " + str(round(total_added_capacity/years_period,)) + " MW",
+
                      fontsize=10, verticalalignment='top', bbox=text_props)
 
             plt.savefig(name + "year_" + str(ii))
@@ -161,23 +162,77 @@ class Analysis:
     def create_histogram(self, name="hist"):
         colours_list = cm.get_cmap("viridis")
 
-        sns.histplot(data=self.wind_data, x="average wind speed", bins=20, kde=True,
+        ax = plt.axes()
+        sns.histplot(data=self.wind_data, ax=ax, x="average wind speed", bins=20, kde=True,
                      weights="electrical_capacity", stat="probability", color=colours_list(0))
+
+        ax.set_title(str(self.wind_data['year'].min()) + " - " + str(self.wind_data['year'].max()))
+
+
+        text_props = dict(boxstyle='square', facecolor='white', edgecolor="none", alpha=0.9, pad=0.5)
+        total_added_capacity = round(self.wind_data['electrical_capacity'].sum(), 1)
+        years_period = self.wind_data['year'].max() - self.wind_data['year'].min()
+
+        y = ax.get_ylim()
+        x = ax.get_xlim()
+
+        avg = self.wind_data["average wind speed"].mean()
+        med = self.wind_data["average wind speed"].median()
+        plt.text(x[0]*1.05, y[1]*0.95,
+                 "Total added capacity: " + str(total_added_capacity) + " MW"
+                 + "\n"
+                 "Added capacity per year: " + str(round(total_added_capacity/years_period)) + " MW"
+                 + "\n"
+                   "Mean: " + str(round(avg, 1))
+                 + "\n"
+                   "Median: " + str(round(med, 1)),
+
+                 fontsize=10, verticalalignment='top', ha="left", bbox=text_props)
 
         plt.savefig(name)
         plt.clf()
         plt.close()
 
     def create_histogram_decade(self, years=[1980, 1990, 2000, 2010], name="hist"):
-        for i in years:
+
+        for i in self.regulatory_phases:
             colours_list = cm.get_cmap("viridis")
 
-            sns.histplot(data=self.wind_data.loc[self.wind_data.decade == i], x="average wind speed", bins=20, kde=True,
-                         weights="electrical_capacity", stat="probability", color=colours_list((i-min(years))/(max(years)-min(years))))
+            yearly_df = self.wind_data.loc[(self.wind_data.year >= self.regulatory_phases[i][0]) &
+                                           (self.wind_data.year < self.regulatory_phases[i][1])]
+
+            ax = plt.axes()
+            sns.histplot(ax=ax, data=yearly_df, x="average wind speed", bins=20, kde=True,
+                         weights="electrical_capacity", stat="probability", color=colours_list(0))
+
+            ax.set_title(str(i) + ": " + str(self.regulatory_phases[i][0]) + " - "
+                         + str(self.regulatory_phases[i][1]-1))
+
+            text_props = dict(boxstyle='square', facecolor='white', edgecolor="none", alpha=0.9, pad=0.5)
+            total_added_capacity = round(yearly_df['electrical_capacity'].sum())
+            years_period = self.regulatory_phases[i][1] - self.regulatory_phases[i][0]
+
+            y = ax.get_ylim()
+            x = ax.get_xlim()
+
+            avg = yearly_df["average wind speed"].mean()
+            med = yearly_df["average wind speed"].median()
+
+            plt.text(x[0] * 1.05, y[1] * 0.95,
+                     "Total added capacity: " + str(total_added_capacity) + " MW"
+                     + "\n"
+                       "Added capacity per year: " + str(round(total_added_capacity / years_period)) + " MW"
+                     + "\n"
+                       "Mean: " + str(round(avg, 1))
+                     + "\n"
+                       "Median: " + str(round(med, 1)),
+
+                     fontsize=10, verticalalignment='top', ha="left", bbox=text_props)
 
             plt.savefig(name + "years" + str(i))
             plt.clf()
             plt.close()
+
 
     def create_histogram_hue(self):
         sns.histplot(data=self.wind_data, x="average wind speed", bins=20, kde=True, weights="electrical_capacity",
@@ -370,8 +425,6 @@ class Analysis:
 
 if __name__ == '__main__':
     Data = Analysis()
-
-
     # Data.save()
 
     """
@@ -380,18 +433,16 @@ if __name__ == '__main__':
 
     Data.heat_map_farms(name="heatmap", lowest_value=1)
     Data.heat_map_farms_yearly(name="heatmap", lowest_value=0.001)
-
-    """
     Data.create_histogram()
-    Data.create_histogram_hue()
     Data.create_histogram_decade()
 
+
+    """
+    Data.create_histogram_hue()
     Data.create_histogram_yearly_add()
-    
-   
 
     Data.do_simple_reg()
-     """
+    """
     # Data.simple_graphs()
 
     # Data.reg_by_state()
