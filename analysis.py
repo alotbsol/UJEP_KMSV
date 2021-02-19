@@ -73,7 +73,7 @@ class Analysis:
         self.wind_data['decade'] = np.floor(self.wind_data['year']/10)*10
 
         self.regulatory_phases = {"Phase1": [1979, 1990], "Phase2": [1990, 2000],
-                                  "Phase3": [2000, 2017], "Phase4": [2017, 2020]}
+                                  "Phase3": [2000, 2017], "Phase4": [2017, 2019]}
 
     def map_print(self):
         tif_array = self.dataset.ReadAsArray()
@@ -101,24 +101,33 @@ class Analysis:
         sns.heatmap(heat_map, ax=ax, cmap='viridis', mask=(heat_map < lowest_value), square=True,
                     xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
 
+        text_props = dict(boxstyle='square', facecolor='white', edgecolor="none", alpha=0.9, pad=0.5)
+
+        total_added_capacity = round(self.wind_data['electrical_capacity'].sum(), 1)
+        years_period = self.wind_data['year'].max() - self.wind_data['year'].min()
+
+        plt.text(0, 1,
+                 "Total added capacity: " + str(total_added_capacity) + " MW"
+                 + "\n"
+                 "Added capacity per year: " + str(round(total_added_capacity/years_period)) + " MW",
+                 fontsize=10, verticalalignment='top', bbox=text_props)
+
         ax.set_title(str(self.wind_data['year'].min()) + " - " + str(self.wind_data['year'].max()))
 
         plt.savefig(name + "year_")
         plt.clf()
         plt.close()
 
-    def heat_map_farms_yearly(self, scale_down=100, name="heatmap", lowest_value=10,
-                              years={"Phase1": [1979, 1990], "Phase2": [1990, 2000],
-                                  "Phase3": [2000, 2017], "Phase4": [2017, 2020]}):
-
+    def heat_map_farms_yearly(self, scale_down=100, name="heatmap", lowest_value=10,):
         cols = self.dataset.RasterXSize
         rows = self.dataset.RasterYSize
         heat_map_x_length = round(cols/scale_down)
         heat_map_y_length = round(rows/scale_down)
 
-        for ii in years:
+        for ii in self.regulatory_phases:
             heat_map = np.zeros((heat_map_x_length, heat_map_y_length))
-            yearly_df = self.wind_data.loc[(self.wind_data.year >= years[ii][0]) & (self.wind_data.year < years[ii][1])]
+            yearly_df = self.wind_data.loc[(self.wind_data.year >= self.regulatory_phases[ii][0]) &
+                                           (self.wind_data.year < self.regulatory_phases[ii][1])]
 
             for iii in yearly_df.index:
                 x = round(heat_map_x_length/cols * yearly_df.loc[iii, 'x_pixel']) - 1
@@ -131,16 +140,19 @@ class Analysis:
             sns.heatmap(heat_map, ax=ax, cmap='viridis', mask=(heat_map < lowest_value), square=True,
                         xticklabels=False, yticklabels=False, linewidths=0.5, robust=True)
 
-            ax.set_title(str(ii) + ": " + str(years[ii][0]) + " - " + str(years[ii][1]))
+            ax.set_title(str(ii) + ": " + str(self.regulatory_phases[ii][0]) + " - "
+                         + str(self.regulatory_phases[ii][1]-1))
 
-            """
-            fig.text(0.02 + shift_value, 0.215,
-                     "Utility Index %: " + str(round((avg - avg_min) / (avg_max - avg_min) * 100)) + "\n"
-                                                                                                     "Average Value: " + str(
-                         round(avg, 2)) + "\n"
-                                          "Median value: " + str(round(med, 2)),
+            text_props = dict(boxstyle='square', facecolor='white', edgecolor="none", alpha=0.9, pad=0.5)
+
+            total_added_capacity = round(yearly_df['electrical_capacity'].sum(),)
+            years_period = self.regulatory_phases[ii][1] - self.regulatory_phases[ii][0]
+
+            plt.text(0, 1,
+                     "Total added capacity: " + str(total_added_capacity) + " MW"
+                     + "\n"
+                     "Added capacity per year: " + str(round(total_added_capacity/years_period,)) + " MW",
                      fontsize=10, verticalalignment='top', bbox=text_props)
-            """
 
             plt.savefig(name + "year_" + str(ii))
             plt.clf()
@@ -366,12 +378,8 @@ if __name__ == '__main__':
     Data.map_print()
     """
 
-
-
-    for i in [1]:
-        Data.heat_map_farms(name="heatmap_{0}".format(i), lowest_value=i)
-
-        Data.heat_map_farms_yearly(name="heatmap_{0}".format(i), lowest_value=i)
+    Data.heat_map_farms(name="heatmap", lowest_value=1)
+    Data.heat_map_farms_yearly(name="heatmap", lowest_value=0.001)
 
     """
     Data.create_histogram()
