@@ -73,9 +73,9 @@ class Analysis:
         self.wind_data['decade'] = np.floor(self.wind_data['year']/10)*10
 
         self.regulatory_phases = {"Period1": [1979, 1990],
-                                  "Period3": [1990, 1995], "Period4": [1995, 2000],
-                                  "Period5": [2000, 2005], "Period6": [2005, 2010],
-                                  "Period7": [2010, 2015], "Period8": [2015, 2019]}
+                                  "Period2": [1990, 1995], "Period3": [1995, 2000],
+                                  "Period4": [2000, 2005], "Period5": [2005, 2010],
+                                  "Period6": [2010, 2015], "Period7": [2015, 2019]}
 
         """
         self.regulatory_phases = {"Phase1": [1979, 1990], "Phase2": [1990, 2000],
@@ -202,7 +202,7 @@ class Analysis:
         plt.clf()
         plt.close()
 
-    def create_histogram_decade(self, years=[1980, 1990, 2000, 2010], name="hist"):
+    def create_histogram_yearly(self, name="hist"):
 
         for i in self.regulatory_phases:
             colours_list = cm.get_cmap("viridis")
@@ -386,7 +386,7 @@ class Analysis:
 
             plt.show()
 
-    def simple_graphs(self):
+    def average_per_region(self):
         y = 0
         years = self.wind_data["year"].unique()
         states = self.wind_data["federal_state"].unique()
@@ -405,28 +405,14 @@ class Analysis:
             average_speed.append(x)
         """
 
-
-        # THIS WORKS
-        """
-        plt.plot(df_pivot.transpose(), color="viridis", marker='o', markersize=2)
-        plt.plot(df_average.transpose(), color='black', linewidth=4, linestyle='dashed')
-
-        plt.legend(states)
-        """
         fig, ax = plt.subplots(figsize=(18, 9))
-
-
         sns.lineplot(x="year", y="average wind speed", hue="federal_state",
-                     data=self.wind_data, ci=None, marker='o', markersize=2)
-        sns.lineplot(x="year", y="average wind speed", data=self.wind_data, color="black", linewidth=4)
+                     data=self.wind_data, estimator="mean", ci=None, marker='o', markersize=2)
+        sns.lineplot(x="year", y="average wind speed", data=self.wind_data, estimator="mean", color="black", linewidth=4)
 
-
-
-        plt.show()
-
-        # plt.savefig("graphs/simple{0}.png".format(str(y)))
-        # plt.clf()
-        # plt.close()
+        plt.savefig("Average_wind_speed{0}.png".format(str(y)))
+        plt.clf()
+        plt.close()
 
         y += 1
 
@@ -443,8 +429,9 @@ if __name__ == '__main__':
     Data.heat_map_farms(name="heatmap", lowest_value=1)
     Data.heat_map_farms_yearly(name="heatmap", lowest_value=0.001)
     Data.create_histogram()
-    Data.create_histogram_decade()
+    Data.create_histogram_yearly()
 
+    Data.average_per_region()
 
     """
     Data.create_histogram_hue()
