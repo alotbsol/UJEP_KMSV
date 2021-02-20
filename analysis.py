@@ -187,6 +187,7 @@ class Analysis:
 
         avg = self.wind_data["average wind speed"].mean()
         med = self.wind_data["average wind speed"].median()
+        stand_dev = self.wind_data["average wind speed"].std()
         plt.text(x[0]*1.05, y[1]*0.95,
                  "Total added capacity: " + str(total_added_capacity) + " MW"
                  + "\n"
@@ -194,7 +195,9 @@ class Analysis:
                  + "\n"
                    "Mean: " + str(round(avg, 1))
                  + "\n"
-                   "Median: " + str(round(med, 1)),
+                   "Median: " + str(round(med, 1))
+                 + "\n"
+                   "Standard deviation: " + str(round(stand_dev, 1)),
 
                  fontsize=10, verticalalignment='top', ha="left", bbox=text_props)
 
@@ -226,6 +229,7 @@ class Analysis:
 
             avg = yearly_df["average wind speed"].mean()
             med = yearly_df["average wind speed"].median()
+            stand_dev = yearly_df["average wind speed"].std()
 
             plt.text(x[0] * 1.05, y[1] * 0.95,
                      "Total added capacity: " + str(total_added_capacity) + " MW"
@@ -234,7 +238,9 @@ class Analysis:
                      + "\n"
                        "Mean: " + str(round(avg, 1))
                      + "\n"
-                       "Median: " + str(round(med, 1)),
+                       "Median: " + str(round(med, 1))
+                     + "\n"
+                       "Standard deviation: " + str(round(stand_dev, 1)),
 
                      fontsize=10, verticalalignment='top', ha="left", bbox=text_props)
 
@@ -242,6 +248,36 @@ class Analysis:
             plt.clf()
             plt.close()
 
+    def average_per_region(self):
+        y = 0
+        years = self.wind_data["year"].unique()
+        states = self.wind_data["federal_state"].unique()
+
+        df_pivot = pd.pivot_table(self.wind_data, values="average wind speed", index="federal_state", columns=["year"],
+                                  aggfunc=np.mean)
+
+        df_average = pd.pivot_table(self.wind_data, values="average wind speed", columns=["year"],
+                                    aggfunc=np.mean)
+
+        """
+        average_speed = []
+        for i in years:
+            x = self.wind_data.loc[self.wind_data.year == i]
+            x = x["average wind speed"].mean(axis=0)
+            average_speed.append(x)
+        """
+
+        fig, ax = plt.subplots(figsize=(18, 9))
+        sns.lineplot(x="year", y="average wind speed", hue="federal_state",
+                     data=self.wind_data, estimator="mean", ci=None, marker='o', markersize=2)
+        sns.lineplot(x="year", y="average wind speed", data=self.wind_data, estimator="mean", color="black",
+                     linewidth=4)
+
+        plt.savefig("Average_wind_speed{0}.png".format(str(y)))
+        plt.clf()
+        plt.close()
+
+        y += 1
 
     def create_histogram_hue(self):
         sns.histplot(data=self.wind_data, x="average wind speed", bins=20, kde=True, weights="electrical_capacity",
@@ -385,37 +421,6 @@ class Analysis:
 
 
             plt.show()
-
-    def average_per_region(self):
-        y = 0
-        years = self.wind_data["year"].unique()
-        states = self.wind_data["federal_state"].unique()
-
-        df_pivot = pd.pivot_table(self.wind_data, values="average wind speed", index="federal_state", columns=["year"],
-                                      aggfunc=np.mean)
-
-        df_average = pd.pivot_table(self.wind_data, values="average wind speed", columns=["year"],
-                                      aggfunc=np.mean)
-
-        """
-        average_speed = []
-        for i in years:
-            x = self.wind_data.loc[self.wind_data.year == i]
-            x = x["average wind speed"].mean(axis=0)
-            average_speed.append(x)
-        """
-
-        fig, ax = plt.subplots(figsize=(18, 9))
-        sns.lineplot(x="year", y="average wind speed", hue="federal_state",
-                     data=self.wind_data, estimator="mean", ci=None, marker='o', markersize=2)
-        sns.lineplot(x="year", y="average wind speed", data=self.wind_data, estimator="mean", color="black", linewidth=4)
-
-        plt.savefig("Average_wind_speed{0}.png".format(str(y)))
-        plt.clf()
-        plt.close()
-
-        y += 1
-
 
 
 if __name__ == '__main__':
