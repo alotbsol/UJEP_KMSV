@@ -8,6 +8,7 @@ from matplotlib.pyplot import cm
 import matplotlib.pyplot as plt
 
 from reg import multi_lin_reg
+from technical_data import average_hub_heights
 
 os.environ['PROJ_LIB'] = 'C:\\Users\\proko\\miniconda3\\pkgs\\proj-6.2.1-h9f7ef89_0\\Library\\share\\proj'
 os.environ['GDAL_DATA'] = 'C:\\Users\\proko\\miniconda3\\pkgs\\proj-6.2.1-h9f7ef89_0\\Library\\share'
@@ -310,7 +311,7 @@ class Analysis:
         self.wind_data.to_excel(writer, sheet_name="AllData")
         writer.save()
 
-    def do_simple_reg(self, base_year=1980):
+    def do_simple_reg(self, base_year=1990):
         year = self.wind_data["year"].unique()
         year_sq = year ** 2
 
@@ -349,15 +350,33 @@ class Analysis:
         for i in phases:
             df[i] = phases[i]
 
+        df['average_hub_height'] = df['year'].map(average_hub_heights)
+
         print(df)
 
         """adjusted base year"""
         df = df.loc[df.year > base_year]
 
         the_model = multi_lin_reg(input_df=df,
-                                  independent_vars=["year_count", "year_count_sq", "ref_yield",
+                                  independent_vars=["average_hub_height", "ref_yield",
                                                     ],
                                   dependent_var=['average_speed'])
+
+        predictions = []
+        predictions_t = []
+        predictions_f = []
+
+        for i in df["year"]:
+            predictions_t.append(float(the_model.predict_it(independent_vars=[average_hub_heights[i], 1])))
+            predictions_f.append(float(the_model.predict_it(independent_vars=[average_hub_heights[i], 0])))
+            predictions.append(float(the_model.predict_it(independent_vars=[average_hub_heights[i],
+                                                          df.loc[df["year"] == i, "ref_yield"].iloc[0]])))
+
+        """
+        the_model = multi_lin_reg(input_df=df,
+                          independent_vars=["year_count", "year_count_sq", "ref_yield",
+                                            ],
+                          dependent_var=['average_speed'])
 
         predictions = []
         predictions_t = []
@@ -368,6 +387,11 @@ class Analysis:
             predictions_f.append(float(the_model.predict_it(independent_vars=[i, i**2, 0])))
             predictions.append(float(the_model.predict_it(independent_vars=[i, i**2,
                                                         df.loc[df["year_count"] == i, "ref_yield"].iloc[0]])))
+        
+        """
+
+
+
 
         for i in [predictions, predictions_t, predictions_f, df["average_speed"]]:
             plt.plot(df["year"].unique(), i, label=["predictions", "predictions", "predictions", "average speed"])
@@ -430,21 +454,18 @@ if __name__ == '__main__':
     """
     Data.map_print()
     """
-
+    """
     Data.heat_map_farms(name="heatmap", lowest_value=1)
     Data.heat_map_farms_yearly(name="heatmap", lowest_value=0.001)
     Data.create_histogram()
     Data.create_histogram_yearly()
 
     Data.average_per_region()
-
     """
-    Data.create_histogram_hue()
-    Data.create_histogram_yearly_add()
+
 
     Data.do_simple_reg()
-    """
-    # Data.simple_graphs()
+
 
     # Data.reg_by_state()
 
