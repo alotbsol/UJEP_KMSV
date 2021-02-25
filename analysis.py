@@ -7,6 +7,10 @@ import xlsxwriter
 from matplotlib.pyplot import cm
 import matplotlib.pyplot as plt
 
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+import scipy.stats as stats
 from reg import multi_lin_reg
 from technical_data import average_hub_heights
 
@@ -358,8 +362,7 @@ class Analysis:
         df = df.loc[df.year > base_year]
 
         the_model = multi_lin_reg(input_df=df,
-                                  independent_vars=["average_hub_height", "ref_yield",
-                                                    ],
+                                  independent_vars=["average_hub_height", "ref_yield",],
                                   dependent_var=['average_speed'])
 
         predictions = []
@@ -400,6 +403,52 @@ class Analysis:
 
         # average wind speed per country, average per region
         # year, year2, referenceyield = TF, auctions = TF, FeedIn = TF
+
+
+    def do_anova(self, low_year_limit=1999, up_year_limit=2001, base_year=2000):
+        """ https://www.reneshbedre.com/blog/anova.html """
+
+        data_before = self.wind_data.loc[(self.wind_data.year < base_year) & (self.wind_data.year >= low_year_limit)]
+        data_after = self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= base_year)]
+
+        fvalue, pvalue = stats.f_oneway(data_before["average wind speed"],
+                                        data_after["average wind speed"])
+        print(fvalue, pvalue)
+
+
+
+        new_df = pd.DataFrame(data=self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= low_year_limit)]
+                              [["year", "average wind speed"]])
+
+        new_df["year"][new_df.year < base_year] = low_year_limit
+        new_df["year"][new_df.year >= base_year] = up_year_limit
+        new_df = new_df.reset_index()
+
+        new_df.columns = ['index', 'treatments', 'value']
+        print(new_df)
+
+        colours_list = cm.get_cmap("viridis")
+        ax = sns.boxplot(x='treatments', y='value', data=new_df, showmeans=True, color=colours_list(0.2))
+
+        plt.savefig("Means_boxplot_anova")
+        plt.clf()
+        plt.close()
+
+        model = ols('value ~ C(treatments)', new_df).fit()
+        print(model.summary())
+        res = sm.stats.anova_lm(model, typ=2)
+        print(res)
+
+
+        """
+        model = ols('value ~ C(treatments)', data=new_df).fit()
+        anova_table = sm.stats.anova_lm(model, typ=2)
+
+        print(anova_table)
+        """
+
+
+
 
     def reg_by_state(self, base_year=1980):
         # df_grouped_by = self.wind_data[["average wind speed", "year", "federal_state"]]
@@ -459,13 +508,16 @@ if __name__ == '__main__':
     Data.heat_map_farms_yearly(name="heatmap", lowest_value=0.001)
     Data.create_histogram()
     Data.create_histogram_yearly()
-
+  
     Data.average_per_region()
     """
 
 
+    """
     Data.do_simple_reg()
+    """
 
+    Data.do_anova()
 
     # Data.reg_by_state()
 
