@@ -6,6 +6,7 @@ import seaborn as sns
 import xlsxwriter
 from matplotlib.pyplot import cm
 import matplotlib.pyplot as plt
+import xlrd
 
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
@@ -131,7 +132,7 @@ class Analysis:
         plt.clf()
         plt.close()
 
-    def heat_map_farms_yearly(self, scale_down=100, name="heatmap", lowest_value=10,):
+    def heat_map_farms_yearly(self, scale_down=200, name="heatmap", lowest_value=10,):
         cols = self.dataset.RasterXSize
         rows = self.dataset.RasterYSize
         heat_map_x_length = round(cols/scale_down)
@@ -405,7 +406,7 @@ class Analysis:
         # year, year2, referenceyield = TF, auctions = TF, FeedIn = TF
 
 
-    def do_anova(self, low_year_limit=1999, up_year_limit=2001, base_year=2000):
+    def do_anova(self, low_year_limit=1995, up_year_limit=2005, base_year=2000):
         """ https://www.reneshbedre.com/blog/anova.html """
 
         data_before = self.wind_data.loc[(self.wind_data.year < base_year) & (self.wind_data.year >= low_year_limit)]
@@ -416,12 +417,13 @@ class Analysis:
         print(fvalue, pvalue)
 
 
-
         new_df = pd.DataFrame(data=self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= low_year_limit)]
                               [["year", "average wind speed"]])
 
-        new_df["year"][new_df.year < base_year] = low_year_limit
-        new_df["year"][new_df.year >= base_year] = up_year_limit
+        new_df.year[new_df.year < base_year] = low_year_limit
+        new_df.year[new_df.year >= base_year] = up_year_limit-1
+        print(new_df)
+
         new_df = new_df.reset_index()
 
         new_df.columns = ['index', 'treatments', 'value']
@@ -435,7 +437,7 @@ class Analysis:
         plt.close()
 
         model = ols('value ~ C(treatments)', new_df).fit()
-        print(model.summary())
+        # print(model.summary())
         res = sm.stats.anova_lm(model, typ=2)
         print(res)
 
@@ -446,6 +448,41 @@ class Analysis:
 
         print(anova_table)
         """
+
+    def do_anova_multi_way(self, low_year_limit=1995, up_year_limit=2005, base_year=2000):
+        """ https://www.reneshbedre.com/blog/anova.html """
+
+        data_before = self.wind_data.loc[(self.wind_data.year < base_year) & (self.wind_data.year >= low_year_limit)]
+        data_after = self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= base_year)]
+
+        fvalue, pvalue = stats.f_oneway(data_before["average wind speed"],
+                                        data_after["average wind speed"])
+        print(fvalue, pvalue)
+
+        new_df = pd.DataFrame(
+            data=self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= low_year_limit)]
+            [["year", "average wind speed"]])
+
+        new_df.year[new_df.year < base_year] = low_year_limit
+        new_df.year[new_df.year >= base_year] = up_year_limit - 1
+        print(new_df)
+
+        new_df = new_df.reset_index()
+
+        new_df.columns = ['index', 'treatments', 'value']
+        print(new_df)
+
+        colours_list = cm.get_cmap("viridis")
+        ax = sns.boxplot(x='treatments', y='value', data=new_df, showmeans=True, color=colours_list(0.2))
+
+        plt.savefig("Means_boxplot_anova")
+        plt.clf()
+        plt.close()
+
+        model = ols('value ~ C(treatments)', new_df).fit()
+        # print(model.summary())
+        res = sm.stats.anova_lm(model, typ=2)
+        print(res)
 
 
 
@@ -503,9 +540,11 @@ if __name__ == '__main__':
     """
     Data.map_print()
     """
+
     """
     Data.heat_map_farms(name="heatmap", lowest_value=1)
     Data.heat_map_farms_yearly(name="heatmap", lowest_value=0.001)
+    
     Data.create_histogram()
     Data.create_histogram_yearly()
   
@@ -513,11 +552,14 @@ if __name__ == '__main__':
     """
 
 
+
     """
     Data.do_simple_reg()
     """
 
+
     Data.do_anova()
+
 
     # Data.reg_by_state()
 
