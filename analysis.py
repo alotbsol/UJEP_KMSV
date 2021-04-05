@@ -316,7 +316,7 @@ class Analysis:
         self.wind_data.to_excel(writer, sheet_name="AllData")
         writer.save()
 
-    def do_simple_reg(self, base_year=1990):
+    def do_simple_reg(self, base_year=1990, up_year=2020):
         year = self.wind_data["year"].unique()
         year_sq = year ** 2
 
@@ -361,10 +361,12 @@ class Analysis:
 
         """adjusted base year"""
         df = df.loc[df.year > base_year]
+        df = df.loc[df.year < up_year]
 
         the_model = multi_lin_reg(input_df=df,
-                                  independent_vars=["average_hub_height", "ref_yield",],
+                                  independent_vars=['average_hub_height', "ref_yield"],
                                   dependent_var=['average_speed'])
+
 
         predictions = []
         predictions_t = []
@@ -376,34 +378,17 @@ class Analysis:
             predictions.append(float(the_model.predict_it(independent_vars=[average_hub_heights[i],
                                                           df.loc[df["year"] == i, "ref_yield"].iloc[0]])))
 
-        """
-        the_model = multi_lin_reg(input_df=df,
-                          independent_vars=["year_count", "year_count_sq", "ref_yield",
-                                            ],
-                          dependent_var=['average_speed'])
-
-        predictions = []
-        predictions_t = []
-        predictions_f = []
-
-        for i in df["year_count"]:
-            predictions_t.append(float(the_model.predict_it(independent_vars=[i, i**2, 1])))
-            predictions_f.append(float(the_model.predict_it(independent_vars=[i, i**2, 0])))
-            predictions.append(float(the_model.predict_it(independent_vars=[i, i**2,
-                                                        df.loc[df["year_count"] == i, "ref_yield"].iloc[0]])))
-        
-        """
-
-
-
-
-        for i in [predictions, predictions_t, predictions_f, df["average_speed"]]:
+        for i in [predictions, predictions_f, df["average_speed"]]:
             plt.plot(df["year"].unique(), i, label=["predictions", "predictions", "predictions", "average speed"])
 
+        legenda = ["Predicted", "Treatment false", "Average ws actual"]
+        plt.legend(legenda)
         plt.show()
+
 
         # average wind speed per country, average per region
         # year, year2, referenceyield = TF, auctions = TF, FeedIn = TF
+
 
 
     def do_anova(self, low_year_limit=1995, up_year_limit=2005, base_year=2000):
@@ -461,14 +446,15 @@ class Analysis:
             data=self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= low_year_limit)]
             [["year", "average wind speed"]])
 
-        new_df.year[new_df.year < base_year] = low_year_limit
-        new_df.year[new_df.year >= base_year] = up_year_limit - 1
+        new_df.loc[(new_df.year < base_year), "year"] = low_year_limit
+        new_df.loc[(new_df.year >= base_year), "year"] = up_year_limit-1
         print(new_df)
 
         new_df = new_df.reset_index()
 
         new_df.columns = ['index', 'treatments', 'value']
         print(new_df)
+
 
         colours_list = cm.get_cmap("viridis")
         ax = sns.boxplot(x='treatments', y='value', data=new_df, showmeans=True, color=colours_list(0.2))
@@ -478,11 +464,9 @@ class Analysis:
         plt.close()
 
         model = ols('value ~ C(treatments)', new_df).fit()
-        # print(model.summary())
+        print(model.summary())
         res = sm.stats.anova_lm(model, typ=2)
         print(res)
-
-
 
 
     def reg_by_state(self, base_year=1980):
@@ -531,6 +515,33 @@ class Analysis:
             plt.show()
 
 
+    def do_reg_all_data(self, base_year=1995, up_year_limit=2005):
+        new_df = pd.DataFrame(
+            data=self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= base_year)]
+            [["year", "average wind speed", "federal_state"]])
+
+        new_df["ref_yield"] = new_df["year"]
+        new_df.loc[(new_df.ref_yield <= 2000), "ref_yield"] = 0
+        new_df.loc[(new_df.ref_yield > 2000), "ref_yield"] = 1
+        new_df['average_hub_height'] = new_df['year'].map(average_hub_heights)
+        new_df['MW_in_region'] = 0
+
+        new_df.dropna(inplace=True)
+        dummy = new_df["federal_state"].unique()
+        for i in dummy:
+            new_df[i] = 0
+
+            new_df.loc[(new_df.federal_state == i), i] = 1
+
+        independent_list = ['average_hub_height', "ref_yield"]
+        for i in dummy:
+            independent_list.append(i)
+
+        the_model = multi_lin_reg(input_df=new_df,
+                                  independent_vars=independent_list,
+                                  dependent_var=['average wind speed'])
+
+
 if __name__ == '__main__':
     Data = Analysis()
     # Data.save()
@@ -557,14 +568,31 @@ if __name__ == '__main__':
     Data.average_per_region()
     """
 
-
-
     """
-    Data.do_simple_reg()
-    """
-
+    # Anova results
     Data.do_anova(low_year_limit=1999, up_year_limit=2001)
     Data.do_anova(low_year_limit=1995, up_year_limit=2005)
+    """
+    """
+    Data.do_anova_multi_way(low_year_limit=1999, up_year_limit=2001)
+    Data.do_anova_multi_way(low_year_limit=1995, up_year_limit=2005)
+    """
+
+    # Big regressions
+
+    Data.do_reg_all_data(base_year=1990, up_year_limit=2018)
+    """
+    Data.do_reg_all_data(base_year=1995, up_year_limit=2005)
+    """
+
+
+    # simple reg
+    """
+    Data.do_simple_reg(base_year=1990, up_year=2018)
+    """
+
+
+
 
 
     # Data.reg_by_state()
