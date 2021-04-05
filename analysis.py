@@ -420,19 +420,17 @@ class Analysis:
         new_df = pd.DataFrame(data=self.wind_data.loc[(self.wind_data.year < up_year_limit) & (self.wind_data.year >= low_year_limit)]
                               [["year", "average wind speed"]])
 
-        new_df.year[new_df.year < base_year] = low_year_limit
-        new_df.year[new_df.year >= base_year] = up_year_limit-1
-        print(new_df)
+        new_df.loc[(new_df.year < base_year), "year"] = low_year_limit
+        new_df.loc[(new_df.year >= base_year), "year"] = up_year_limit-1
 
         new_df = new_df.reset_index()
 
         new_df.columns = ['index', 'treatments', 'value']
-        print(new_df)
 
         colours_list = cm.get_cmap("viridis")
-        ax = sns.boxplot(x='treatments', y='value', data=new_df, showmeans=True, color=colours_list(0.2))
+        ax = sns.violinplot(x='treatments', y='value', data=new_df, showmeans=True, color=colours_list(0.2))
 
-        plt.savefig("Means_boxplot_anova")
+        plt.savefig("Means_violinplot_anova{0}".format(str(low_year_limit)))
         plt.clf()
         plt.close()
 
@@ -541,13 +539,21 @@ if __name__ == '__main__':
     Data.map_print()
     """
 
+
     """
+    # Figure 2
     Data.heat_map_farms(name="heatmap", lowest_value=1)
+    
+    # Figure 4
     Data.heat_map_farms_yearly(name="heatmap", lowest_value=0.001)
     
+    # Figure 3
     Data.create_histogram()
+    
+    # Figure 5
     Data.create_histogram_yearly()
-  
+    
+    # Figure 6
     Data.average_per_region()
     """
 
@@ -557,8 +563,8 @@ if __name__ == '__main__':
     Data.do_simple_reg()
     """
 
-
-    Data.do_anova()
+    Data.do_anova(low_year_limit=1999, up_year_limit=2001)
+    Data.do_anova(low_year_limit=1995, up_year_limit=2005)
 
 
     # Data.reg_by_state()
